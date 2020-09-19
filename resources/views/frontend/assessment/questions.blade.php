@@ -95,83 +95,83 @@
             <section class="">
                 <div class="container">
                     @foreach($questions as $question)
-                    <div class="row p-4 mt-2" style="background: #eee">
-                        <h4 class="col-lg-12" style="font-size: 16px;color: #de3545">Question  {{request('page') ?? $loop->iteration}} </h4>
-                        @if($question->image != null)
+                        <div class="row p-4 mt-2" style="background: #eee">
+                            <h4 class="col-lg-12" style="font-size: 16px;color: #de3545">Question  {{request('page') ?? $loop->iteration}} </h4>
+                            @if($question->image != null)
 
-                        <div class="col-lg-12 ">
-                            <p>{!! $question->question !!}</p>
+                                <div class="col-lg-12 ">
+                                    <p>{!! $question->question !!}</p>
 
-                        </div>
+                                </div>
 
-                        <div class="col-lg-12">
-                            <a href="" data-toggle="modal" id="hover" data-target="#exampleModal{{$question->id}}">
-                                <img src="{{asset($question->image)}}" alt="" class="img-fluid img-thumbnail">
-                            </a>
-
-                            <div class="modal fade" id="exampleModal{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document" style="position: relative">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: #ddd;padding: 2px 8px;border-radius: 50%;position: absolute;z-index: 999;right: -13px;top: -17px;">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <div class="modal-content">
-
-
-
+                                <div class="col-lg-12">
+                                    <a href="" data-toggle="modal" id="hover" data-target="#exampleModal{{$question->id}}">
                                         <img src="{{asset($question->image)}}" alt="" class="img-fluid img-thumbnail">
+                                    </a>
 
+                                    <div class="modal fade" id="exampleModal{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document" style="position: relative">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background: #ddd;padding: 2px 8px;border-radius: 50%;position: absolute;z-index: 999;right: -13px;top: -17px;">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="modal-content">
+
+
+
+                                                <img src="{{asset($question->image)}}" alt="" class="img-fluid img-thumbnail">
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        @else
-                        <div class="col-lg-12 ">
-                            <p>{!! $question->question !!}</p>
+                            @else
+                                <div class="col-lg-12 ">
+                                    <p>{!! $question->question !!}</p>
 
+                                </div>
+                            @endif
+                            @foreach($question->options as $option)
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <div class="inputGroup">
+                                        <input id="{{$option->id}}" name="{{$question->id}}" value="{{$option->id}}" type="radio" required>
+                                        <label for="{{$option->id}}">{{$option->option}}</label>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        @endif
-                        @foreach($question->options as $option)
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <div class="inputGroup">
-                                <input id="{{$option->id}}" name="{{$question->id}}" value="{{$option->id}}" type="radio" required>
-                                <label for="{{$option->id}}">{{$option->option}}</label>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
                     @endforeach
                 </div>
             </section>
 
             <div class="container">
 
-            <div class="row">
-                <div class="col-lg-6 pull-left">
-                    <div id="DateCountdown" data-date="{{$payment->start_date}}" style="z-index:999;width: 500px; height: 125px; padding: 0px; box-sizing: border-box;"></div>
-                    <div>
-                        <div id="PageOpenTimer" style="width: 500px; height: 20px; float: left"></div>
-                    </div>
+                <div class="row">
+                    <div class="col-lg-6 pull-left">
+                        <div id="DateCountdown" data-date="{{$payment->start_date}}" style="z-index:999;width: 500px; height: 125px; padding: 0px; box-sizing: border-box;"></div>
+                        <div>
+                            <div id="PageOpenTimer" style="width: 500px; height: 20px; float: left"></div>
+                        </div>
 
-                </div>
-                @if($questions->hasMorePages())
-                    <input type="hidden" name="nextpage" value="{{URL::current().substr($questions->nextPageUrl(),1)}}">
-                <div class="col-lg-6  pull-right text-right mt-3">
-                    <button type="submit" class="btn btn-dark  text-white text-left mr-2"> <i class="la la-chevron-right mr-2 ic-2x d-inline-block"></i>
-                        <div class="d-inline-block"> <small class="d-block">Next</small>
-                            Page</div>
-                    </button>
-                </div>
-                @else
-                    <div class="col-lg-6  pull-right text-right mt-3">
-                        <button type="submit" class="btn btn-dark  text-white text-left mr-2"> <i class="la la-chevron-right mr-2 ic-2x d-inline-block"></i>
-                            <div class="d-inline-block"> <small class="d-block">Finch</small>
-                                Exam</div>
-                        </button>
                     </div>
-                @endif
+                    @if($questions->hasMorePages())
+                        <input type="hidden" name="nextpage" value="{{URL::current().substr($questions->nextPageUrl(),1)}}">
+                        <div class="col-lg-6  pull-right text-right mt-3">
+                            <button type="submit" class="btn btn-dark  text-white text-left mr-2"> <i class="la la-chevron-right mr-2 ic-2x d-inline-block"></i>
+                                <div class="d-inline-block"> <small class="d-block">Next</small>
+                                    Page</div>
+                            </button>
+                        </div>
+                    @else
+                        <div class="col-lg-6  pull-right text-right mt-3">
+                            <button type="submit" class="btn btn-dark  text-white text-left mr-2"> <i class="la la-chevron-right mr-2 ic-2x d-inline-block"></i>
+                                <div class="d-inline-block"> <small class="d-block">Finch</small>
+                                    Exam</div>
+                            </button>
+                        </div>
+                    @endif
+                </div>
             </div>
-        </div>
         </form>
     </div>
     <meta http-equiv="refresh" content="{{$payment->start_date}};url={{route('exam.grades',$payment->id)}}" />

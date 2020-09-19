@@ -27,6 +27,7 @@ class ExamsController extends Controller
     }
 
     public function begin($orderId){
+
         $order = Order::find($orderId);
         date_default_timezone_set('Europe/London');
         $products = Question::where('subject_id',$order->package->subject_id)->with(['options' => function ($q) {

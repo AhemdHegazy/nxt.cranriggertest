@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-
+Route::get('/test', function () {
+    $tables = array_map('reset', \DB::select('SHOW TABLES'));
+    dd($tables);
+});
 Route::group(['prefix' => 'admin','middleware' =>'admin:admin','namespace' => 'Backend'],function (){
     /*
     |--------------------------------------------------------------------------

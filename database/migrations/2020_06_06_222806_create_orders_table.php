@@ -16,12 +16,13 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('amount');
-            $table->timestamp('validation_date')->nullable();
+            $table->tinyInteger('minutes')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('package_id');
             $table->tinyInteger('has_coupon')->nullable();
             $table->tinyInteger('coupon_id')->nullable();
-            $table->tinyInteger('hours')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->timestamp('validation_date')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('package_id')->references('id')->on('packages');
             $table->timestamps();

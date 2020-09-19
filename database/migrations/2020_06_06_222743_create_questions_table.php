@@ -15,10 +15,10 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
+            $table->longText('question');
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('subject_id');
-            $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->unsignedBigInteger('capacity_id');
+            $table->foreign('capacity_id')->references('id')->on('capacities');
             $table->timestamps();
         });
     }

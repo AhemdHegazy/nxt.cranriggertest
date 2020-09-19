@@ -15,9 +15,16 @@ class CreateCMSTable extends Migration
     {
         Schema::create('c_m_s', function (Blueprint $table) {
             $table->id();
-            $table->string('phone');
+            $table->longText('organization_pkg');
+            $table->longText('organization_login');
+            $table->longText('individual_pkg');
+            $table->longText('individual_login');
+            $table->longText('contacts');
+            $table->longText('main_title');
+            $table->longText('user_comments');
+            $table->longText('numbers_section');
+            $table->longText('exam_goals');
             $table->string('logo');
-            $table->string('email');
             $table->string('description');
             $table->string('address');
             $table->timestamps();

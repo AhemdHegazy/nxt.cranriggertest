@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGuidelinesTable extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateGuidelinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('guidelines', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->unsignedBigInteger('subject_id')->nullable();
+            $table->string('slug');
+            $table->longText('content');
+            $table->string('featured');
+            $table->unsignedBigInteger('subject_id');
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->timestamps();
         });
@@ -30,6 +33,6 @@ class CreateGuidelinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guidelines');
+        Schema::dropIfExists('posts');
     }
 }

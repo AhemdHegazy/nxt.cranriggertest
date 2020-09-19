@@ -20,8 +20,10 @@ class CreateAnswersTable extends Migration
             $table->unsignedBigInteger('payment_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('option_id');
             $table->foreign('question_id')->references('id')->on('questions');
             $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('option_id')->references('id')->on('options');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('payment_id')->references('id')->on('payments');
             $table->timestamps();
