@@ -7,7 +7,7 @@
             <div class="col-md-11">
                 <div class="card">
                     <div class="card__header">
-                        @if($subjects->count()!=0)
+                        @if($capacities->count()!=0)
                             <h4>Questions List
                                 <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Question</a>
                             </h4>
@@ -15,7 +15,7 @@
                             <div class="alert alert-danger alert-dismissible">
                                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span></button>
                                 <small>
-                                    Please! <a href="{{route('subjects.index')}}" class="alert-link">Add Some subjects</a>
+                                    Please! <a href="{{route('capacities.index')}}" class="alert-link">Add Some subjects</a>
                                 </small>
                             </div>
                         @endif
@@ -27,7 +27,7 @@
                             <tr>
                             <th width="30">No</th>
                             <th>Question</th>
-                            <th>Subject</th>
+                            <th>Capcaity</th>
                             <th>Image</th>
                             <th width="60"></th>
                         </tr>
@@ -46,7 +46,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
 
     <script type="text/javascript">
+        $('#subject_id').change(function(){
+            if($(this).val() != '')
+            {
+                var select = $(this).attr("id");
+                var value = $(this).val();
+                var _token = $('input[name="_token"]').val();
+                $.ajax({
+                    url:"{{ route('subjects.fetch') }}",
+                    method:"POST",
+                    data:{select:select, value:value, _token:_token},
+                    success:function(result)
+                    {
+                        $('#capacity_id').html(result);
+                    }
 
+                })
+            }
+        });
     $(document).ready(function() {
         $('.summernote').summernote({
             height: 200,
@@ -67,7 +84,7 @@
         columns: [
             {data: 'idn', name: 'idn'},
             {data: 'question', name: 'question'},
-            {data: 'subject_id', name: 'subject_id'},
+            {data: 'capacity_id', name: 'capacity_id'},
             {data: 'image', name: 'image'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
@@ -96,7 +113,7 @@
 
                 $('#id').val(data.id);
                 $('.summernote').summernote('code', data.question);
-                $('#subject_id').val(data.subject_id);
+                $('#capacity_id').val(data.capacity_id);
                 //$('#image').val(data.image);//value.true
                 $.each(data.options ,function (index,value) {
                     index = index+1;

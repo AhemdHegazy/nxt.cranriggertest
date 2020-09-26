@@ -17,6 +17,7 @@
                             <th>Title</th>
                             <th>Description</th>
                             <th>Main Image</th>
+                            <th>Subject</th>
                             <th width="60"></th>
                         </tr>
                         </thead>
@@ -55,6 +56,7 @@
                 {data: 'title', name: 'title'},
                 {data: 'description', name: 'description'},
                 {data: 'featured', name: 'featured'},
+                {data: 'subject', name: 'subject'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
         });
@@ -85,6 +87,7 @@
 
                     $('#modal-form #id').val(data.id);
                     $('#modal-form #title').val(data.title);
+                    $('#modal-form #subject_id').val(data.subject_id);
                     $('#modal-form #description').val(data.description);
                     $('#modal-form #contents').val(data.content);
                     $('.summernote').summernote('code', data.content);

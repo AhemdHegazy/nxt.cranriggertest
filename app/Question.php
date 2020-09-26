@@ -9,12 +9,12 @@ class Question extends Model
     protected $fillable=[
         'question',
         'image',
-        'subject_id'
+        'capacity_id'
     ];
 
 
-    public function subject(){
-        return $this->belongsTo('App\Subject');
+    public function capacity(){
+        return $this->belongsTo('App\Capacity');
     }
 
     public function answers(){

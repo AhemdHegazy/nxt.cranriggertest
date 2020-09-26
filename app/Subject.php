@@ -11,7 +11,7 @@ class Subject extends Model
         'description'
     ];
 
-    public function questions(){
-        return $this->hasMany('App\Question');
+    public function capacities(){
+        return $this->hasMany('App\Capacity');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Capacity;
 use App\Http\Controllers\Controller;
 use App\Option;
 use App\Question;
@@ -15,35 +16,41 @@ class QuestionsController extends Controller
     public function index()
     {
         return view('admin.questions.index',[
-            'subjects'  => Subject::all()
+            'capacities'  => Capacity::all(),
+            'subjects'  => Subject::all(),
         ]);
     }
 
     public function store(Request $request)
     {
+
         $input['image'] = null;
 
         if ($request->hasFile('image')){
             $input['image'] = '/upload/questions/'.time().$request->image->getClientOriginalExtension();
             $request->image->move('/home/u875885261/domains/craneriggertest.com/public_html/upload/questions/', $input['image']);
         }
-
-        $question = Question::create([
-            'question' => $request->question,
-            'subject_id' => $request->subject_id,
-            'image'       => $input['image']
-        ]);
-        foreach ($request->options as $key=>$option){
-            $true=0;
-            if($request->true == $key){
-                $true = 1;
-            }
-            Option::create([
-                'question_id'   =>$question->id,
-                'option'        =>$option,
-                'true'          =>$true,
+        foreach ($request->capacity_id as $capacity){
+            $question = Question::create([
+                'question' => $request->question,
+                'capacity_id' => $capacity,
+                'image'       => $input['image']
             ]);
+
+            foreach ($request->options as $key=>$option){
+                $true=0;
+                if($request->true == $key){
+                    $true = 1;
+                }
+                Option::create([
+                    'question_id'   =>$question->id,
+                    'option'        =>$option,
+                    'true'          =>$true,
+                ]);
+            }
         }
+
+
         return response()->json([
             'success' => true,
             'message' => 'Language Created'
@@ -77,7 +84,7 @@ class QuestionsController extends Controller
         }
         $language->update([
             'question' => $request->question,
-            'subject_id' => $request->subject_id,
+            'capacity_id' => $request->capacity_id,
             'image'       => $input['image']
         ]);
 
@@ -118,29 +125,39 @@ class QuestionsController extends Controller
 
     public function questions()
     {
-        $Question = Question::all();
+        $question = Question::all();
 
-        return DataTables::of($Question)
+        return DataTables::of($question)
             ->addColumn('idn', function(){
                 static $var= 1;
                 return $var++;
             })
-            ->addColumn('question', function($Question){
-                return $Question->question;
+            ->addColumn('question', function($question){
+                return $question->question;
             })
-            ->addColumn('subject_id', function($Question){
-                return $Question->subject->name;
+            ->addColumn('capacity_id', function($question){
+                return $question->capacity->name;
             })
-            ->addColumn('image', function($Question){
-                if ($Question->image == NULL){
+            ->addColumn('image', function($question){
+                if ($question->image == NULL){
                     return 'No Image';
                 }
-                return '<img class="rounded-square" width="50" height="50" src="'. url($Question->image) .'" alt="">';;
+                return '<img class="rounded-square" width="50" height="50" src="'. url($question->image) .'" alt="">';;
             })
-            ->addColumn('action', function($Question){
-                return '<a onclick="editForm('. $Question->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
-                    '<a onclick="deleteData('. $Question->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+            ->addColumn('action', function($question){
+                return '<a onclick="editForm('. $question->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
+                    '<a onclick="deleteData('. $question->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
             })
-            ->rawColumns(['question','idn','subject_id','image', 'action'])->make(true);
+            ->rawColumns(['question','idn','capacity_id','image', 'action'])->make(true);
+    }
+
+    public function subjects(Request $request){
+        $output = '';
+        $data = Capacity::where('subject_id',$request->value)->get();
+        foreach($data as $row)
+        {
+            $output .= '<option value="'.$row->id.'" style="padding:5px;margin:2px;border:1px solid #aaa">'.$row->name.'</option>';
+        }
+        echo $output;
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Capacity;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -13,7 +15,9 @@ class PostsController extends Controller
 
     public function index()
     {
-        return view('admin.posts.index');
+        return view('admin.posts.index',[
+            'subjects'  => Subject::all()
+        ]);
     }
 
     public function create()
@@ -32,6 +36,7 @@ class PostsController extends Controller
 
         Post::create([
             'title' => $request->title,
+            'subject_id' => $request->subject_id,
             'description' => $request->description,
             'slug' => Str::slug($request->title),
             'content' => $request->contents,
@@ -72,6 +77,7 @@ class PostsController extends Controller
         }
         $Post->update([
             'title' => $request->title,
+            'subject_id' => $request->subject_id,
             'description' => $request->description,
             'slug' => Str::slug($request->title),
             'content' => $request->contents,
@@ -109,6 +115,9 @@ class PostsController extends Controller
             ->addColumn('description', static function($post){
                 return $post->description;
             })
+            ->addColumn('subject', static function($post){
+                return $post->subject->name;
+            })
             ->addColumn('featured',static function($post){
                 if ($post->featured == NULL){
                     return 'No Image';
@@ -119,6 +128,6 @@ class PostsController extends Controller
                 return '<a onclick="editForm('. $post->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
                     '<a onclick="deleteData('. $post->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
             })
-            ->rawColumns(['title','description','featured','action'])->make(true);
+            ->rawColumns(['title','description','subject','featured','action'])->make(true);
     }
 }

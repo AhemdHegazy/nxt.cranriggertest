@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Faker\Generator as Faker;
 class QuestionsTableSeeder extends Seeder
 {
     /**
@@ -9,14 +9,14 @@ class QuestionsTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Faker $faker)
     {
 
         for($i=0;$i<40;$i++){
            $question = \App\Question::create([
-               'question'       =>'this is question',
+               'question'       =>$faker->paragraph,
                'image'          =>null,
-               'subject_id'     =>rand(1,5)
+               'capacity_id'     =>rand(1,10)
            ]);
 
             \App\Option::create([

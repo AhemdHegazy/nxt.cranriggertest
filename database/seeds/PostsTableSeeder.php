@@ -17,7 +17,8 @@ class PostsTableSeeder extends Seeder
                 'description'     =>'Description '.$i,
                 'slug'      =>'Subject '.$i,
                 'featured'  =>'featured',
-                'content'   =>'lorem ipsum'
+                'content'   =>'lorem ipsum',
+                'subject_id'   =>rand(1,5)
             ]);
         }
     }

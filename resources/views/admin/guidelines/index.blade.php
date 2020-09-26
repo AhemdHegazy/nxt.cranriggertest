@@ -16,6 +16,7 @@
                             <th width="30">No</th>
                             <th>Title</th>
                             <th>Description</th>
+                            <th>Subject</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -42,6 +43,7 @@
             {data: 'idn', name: 'idn'},
             {data: 'title', name: 'title'},
             {data: 'description', name: 'description'},
+            {data: 'subject', name: 'subject'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
 
@@ -72,6 +74,7 @@
                 $('#id').val(data.id);
                 $('#title').val(data.title);
                 $('#description').val(data.description);
+                $('#subject_id').val(data.subject_id);
             },
             error : function() {
                 alert("Nothing Data");

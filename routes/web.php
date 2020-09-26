@@ -29,6 +29,7 @@ Route::group(['prefix' => 'admin','middleware' =>'admin:admin','namespace' => 'B
     Route::resource('questions', 'QuestionsController', ['except' => ['create']]);
     Route::resource('posts', 'PostsController', ['except' => ['create']]);
     Route::resource('subjects', 'SubjectsController', ['except' => ['create','show']]);
+    Route::resource('capacities', 'CapacitiesController', ['except' => ['create','show']]);
     Route::resource('countries', 'CountriesController', ['except' => ['create','show']]);
     Route::resource('coupons', 'CouponsController', ['except' => ['create','show']]);
     Route::resource('orders','OrdersController', ['except' => ['create','show']]);
@@ -38,6 +39,10 @@ Route::group(['prefix' => 'admin','middleware' =>'admin:admin','namespace' => 'B
     Route::resource('guidelines','GuidelinesController',['except' => ['create','show']]);
     Route::resource('contacts','ContactsController',['except' => ['create','show','store','edit','update']]);
     Route::resource('admins','AdminsController',['except' => ['create','show']]);
+
+
+    Route::post('subjects-fetch', 'QuestionsController@subjects')->name('subjects.fetch');
+
     Route::get('/world','CountriesController@world')->name('world.index');
     Route::get('/payments-query','PaymentsController@queryGet')->name('queryGet.index');
     Route::post('/payments-query','PaymentsController@queryPost')->name('payments.query');

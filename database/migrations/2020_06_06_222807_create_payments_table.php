@@ -17,12 +17,12 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->integer('amount');
             $table->tinyInteger('status');
-            $table->timestamps('start_date');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('order_id');
             $table->integer('bank_transaction_id');
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamp('start_date');
             $table->timestamps();
         });
     }

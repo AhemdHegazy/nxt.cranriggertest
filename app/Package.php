@@ -12,8 +12,9 @@ class Package extends Model
       'type',
       'subject_id',
       'questions',
-      'hours',
-      'increase'
+      'add_price',
+      'minute',
+      'add_minute'
     ];
 
     public function orders(){

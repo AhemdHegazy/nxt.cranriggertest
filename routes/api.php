@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Backend'],function(){
    Route::get('subjects','SubjectsController@subjects')->name('api.subjects');
+   Route::get('capacities','CapacitiesController@capacities')->name('api.capacities');
    Route::get('testimonials','TestimonialsController@testimonials')->name('api.testimonials');
    Route::get('posts','PostsController@posts')->name('api.posts');
    Route::get('questions','QuestionsController@questions')->name('api.questions');

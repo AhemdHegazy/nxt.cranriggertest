@@ -8,6 +8,12 @@ class Guideline extends Model
 {
     protected $fillable=[
       'title',
-      'description'
+      'description',
+      'subject_id',
     ];
+
+    public function subject(){
+        return $this->belongsTo('App\Subject');
+    }
+
 }

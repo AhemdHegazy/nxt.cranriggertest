@@ -22,6 +22,8 @@ class CreatePackagesTable extends Migration
             $table->tinyInteger('minute');
             $table->tinyInteger('add_minute');
             $table->tinyInteger('add_price');
+            $table->unsignedBigInteger('subject_id');
+            $table->foreign('subject_id')->references('id')->on('subjects');
             $table->timestamps();
         });
     }

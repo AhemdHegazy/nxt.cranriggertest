@@ -3,6 +3,7 @@
         <ul>
             <li><a href="{{route('home.index')}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
             <li><a href="{{route('subjects.index')}}"><i class="zmdi zmdi-view-list"></i> Subjects </a> </li>
+            <li><a href="{{route('capacities.index')}}"><i class="zmdi zmdi-view-list"></i> Capacities </a> </li>
             <li><a href="{{route('questions.index')}}"><i class="zmdi zmdi-view-list"></i> Questions </a></li>
             <li><a href="{{route('packages.index')}}"><i class="zmdi zmdi-view-list"></i> Packages </a></li>
             <li><a href="{{route('posts.index')}}"><i class="zmdi zmdi-view-list"></i> Posts </a></li>

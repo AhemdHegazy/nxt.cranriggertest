@@ -1,27 +1,23 @@
 @extends('admin.layouts.app')
 @section('content')
-        <div class="row">
-            <div class="col-md-11">
-                <div class="card">
-                    <div class="card__header">
-                        <h4>Packages List
-                            <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Package</a>
-                        </h4>
-                    </div>
-                    <div class="card__body">
-                        <table id="packages-table" class="table table-striped">
-                            <thead>
-                            <tr>
+    <div class="row">
+        <div class="col-md-11">
+            <div class="card">
+                <div class="card__header">
+                    <h4>Subject List
+                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Subject</a>
+                    </h4>
+                </div>
+                <div class="card__body">
+                    <table id="Subject-table" class="table table-striped">
+
+                        <thead>
+                        <tr>
                             <th width="30">No</th>
                             <th>Name</th>
-                            <th>Type</th>
+                            <th>Description</th>
                             <th>Subject</th>
-                            <th>Questions</th>
-                            <th>Price</th>
-                            <th>Minutes</th>
-                            <th>Increase Minute</th>
-                            <th>Increase Price</th>
-                            <th width="60"></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -29,30 +25,30 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>
-    @include('admin.packages.form')
+    @include('admin.subjects.form')
 @endsection
 @section('scripts')
 <script type="text/javascript">
-    var table = $('#packages-table').DataTable({
+    var table = $('#Subject-table').DataTable({
+
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.packages') }}",
+        ajax: "{{ route('api.capacities') }}",
 
         columns: [
             {data: 'idn', name: 'idn'},
             {data: 'name', name: 'name'},
-            {data: 'type', name: 'type'},
+            {data: 'description', name: 'description'},
             {data: 'subject', name: 'subject'},
-            {data: 'questions', name: 'questions'},
-            {data: 'price', name: 'price'},
-            {data: 'minute', name: 'minute'},
-            {data: 'add_minute', name: 'add_minute'},
-            {data: 'add_price', name: 'add_price'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
+
+
+
     });
 
     function addForm() {
@@ -60,7 +56,7 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add Question');
+        $('.modal-title').text('Add Subject');
     }
 
     function editForm(id) {
@@ -68,22 +64,17 @@
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-            url: "{{ url('admin/packages') }}" + '/' + id + "/edit",
+            url: "{{ url('admin/subjects') }}" + '/' + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('#modal-form').modal('show');
-                $('.modal-title').text('Edit Question');
+                $('.modal-title').text('Edit Subject');
 
                 $('#id').val(data.id);
                 $('#name').val(data.name);
-                $('#type').val(data.type);
-                $('#questions').val(data.questions);
-                $('#price').val(data.price);
-                $('#minute').val(data.minute);
-                $('#subject_id').val(data.subject_id);
-                $('#add_minute').val(data.add_minute);
-                $('#add_price').val(data.add_price);
+                $('#capacity_id').val(data.capacity_id);
+                $('#description').val(data.description);
             },
             error : function() {
                 alert("Nothing Data");
@@ -103,7 +94,7 @@
             confirmButtonText: 'Yes, delete it!'
         }).then(function () {
             $.ajax({
-                url : "{{ url('admin/packages') }}" + '/' + id,
+                url : "{{ url('admin/subjects') }}" + '/' + id,
                 type : "POST",
                 data : {'_method' : 'DELETE', '_token' : csrf_token},
                 success : function(data) {
@@ -131,8 +122,8 @@
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
                 var id = $('#id').val();
-                if (save_method == 'add') url = "{{ url('admin/packages') }}";
-                else url = "{{ url('admin/packages') . '/' }}" + id;
+                if (save_method == 'add') url = "{{ url('admin/subjects') }}";
+                else url = "{{ url('admin/subjects') . '/' }}" + id;
 
                 $.ajax({
                     url : url,

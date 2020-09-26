@@ -43,6 +43,17 @@
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="subject_id" class="col-md-2 control-label"  style="color: #ddd;;text-align: left">Subject</label>
+                                <div class="col-md-10">
+                                    <select name="subject_id" id="subject_id" class="form-control" style="height: 35px">
+
+                                        @foreach($subjects as $subject)
+                                            <option value="{{$subject->id}}">{{$subject->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary btn-save">Submit</button>

@@ -17,9 +17,9 @@
                         <div class="modal-body">
                             <input type="hidden" id="id" name="id">
                             <div class="form-group">
-                                <label for="title" class="col-md-2 control-label"  style="color: #ddd;text-align: left">Title</label>
+                                <label for="name" class="col-md-2 control-label"  style="color: #ddd;text-align: left">Name</label>
                                 <div class="col-md-10">
-                                    <input type="text" id="title" name="title" class="form-control" autofocus required>
+                                    <input type="text" id="name" name="name" class="form-control" autofocus required>
                                     <span class="help-block with-errors"></span>
                                 </div>
                             </div>
@@ -34,8 +34,6 @@
                                 <label for="subject_id" class="col-md-2 control-label"  style="color: #ddd;;text-align: left">Subject</label>
                                 <div class="col-md-10">
                                     <select name="subject_id" id="subject_id" class="form-control" style="height: 35px">
-                                        <option value="" disabled>Select Subject</option>
-                                        <option value="">All</option>
                                         @foreach($subjects as $subject)
                                             <option value="{{$subject->id}}">{{$subject->name}}</option>
                                         @endforeach

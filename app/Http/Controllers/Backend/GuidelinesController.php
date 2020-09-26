@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Guideline;
+use App\Subject;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -11,7 +12,9 @@ class GuidelinesController extends Controller
 {
     public function index()
     {
-        return view('admin.guidelines.index');
+        return view('admin.guidelines.index',[
+            'subjects'  => Subject::all()
+        ]);
     }
 
     public function store(Request $request)
@@ -71,10 +74,13 @@ class GuidelinesController extends Controller
             ->addColumn('description', function($Guideline){
                 return $Guideline->description;
             })
+            ->addColumn('subject', static function($post){
+                return $post->subject_id ? $post->subject->name : 'All';
+            })
             ->addColumn('action', function($Guideline){
                 return '<a onclick="editForm('. $Guideline->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
                     '<a onclick="deleteData('. $Guideline->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
             })
-            ->rawColumns(['idn','title','description', 'action'])->make(true);
+            ->rawColumns(['idn','title','subject','description', 'action'])->make(true);
     }
 }

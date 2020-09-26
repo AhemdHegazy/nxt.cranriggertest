@@ -10,12 +10,17 @@ class Post extends Model
         'title',
         'description',
         'slug',
+        'subject_id',
         'featured',
         'content'
     ];
 
     public function comments(){
         return $this->hasMany('App\Comment');
+    }
+
+    public function subject(){
+        return $this->belongsTo('App\Subject');
     }
 
 }

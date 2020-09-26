@@ -89,11 +89,22 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="subject_id" class="col-md-2 control-label"  style="color: #ddd;;text-align: left">Category</label>
+                        <label for="subject_id" class="col-md-2 control-label"  style="color: #ddd;;text-align: left">Subject</label>
                         <div class="col-md-10">
-                            <select name="subject_id" id="subject_id" class="form-control" style="height: 35px">
-                                @foreach($subjects as $subject)
-                                    <option value="{{$subject->id}}">{{$subject->name}}</option>
+                            <select id="subject_id" class="form-control" style="height: 35px">
+                                <option disabled selected>Select Subject</option>
+                                @foreach($subjects as $capacity)
+                                    <option value="{{$capacity->id}}">{{$capacity->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="capacity_id" class="col-md-2 control-label"  style="color: #ddd;;text-align: left;">Categories</label>
+                        <div class="col-md-10">
+                            <select name="capacity_id[]" id="capacity_id" class="form-control" style="height: 150px" multiple>
+                                @foreach($capacities as $capacity)
+                                    <option value="{{$capacity->id}}" style="padding:5px;margin:2px;border:1px solid #aaa">{{$capacity->name}}</option>
                                 @endforeach
                             </select>
                         </div>
