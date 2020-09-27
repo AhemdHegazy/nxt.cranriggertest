@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HelperController;
 use App\Subject;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -12,6 +13,9 @@ class SubjectsController extends Controller
 
     public function index()
     {
+        if(HelperController::hasShow(auth('admin')->id(),'subject') == false){
+            return redirect()->route('home.index');
+        }
         return view('admin.subjects.index');
     }
 
@@ -63,9 +67,9 @@ class SubjectsController extends Controller
             'message' => 'Subject Deleted'
         ]);
     }
-
-    public function subjects()
-    {
+    protected $adminId;
+    public function subjects($adminId){
+        $this->adminId = $adminId;
         $Subject = Subject::all();
 
         return DataTables::of($Subject)
@@ -80,8 +84,14 @@ class SubjectsController extends Controller
                 return $Subject->description;
             })
             ->addColumn('action', function($Subject){
-                return '<a onclick="editForm('. $Subject->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
-                    '<a onclick="deleteData('. $Subject->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                $return = '';
+                if(HelperController::hasEdit($this->adminId,'subject') == true){
+                    $return.='<a onclick="editForm('. $Subject->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' ;
+                }
+                if(HelperController::hasDelete($this->adminId,'subject') == true){
+                    $return.='<a onclick="deleteData('. $Subject->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                }
+                return $return;
             })
             ->rawColumns(['idn','name','description', 'action'])->make(true);
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Capacity;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HelperController;
 use App\Option;
 use App\Question;
 use App\Subject;
@@ -15,6 +16,9 @@ class QuestionsController extends Controller
 {
     public function index()
     {
+        if(HelperController::hasShow(auth('admin')->id(),'post') == false){
+            return redirect()->route('home.index');
+        }
         return view('admin.questions.index',[
             'capacities'  => Capacity::all(),
             'subjects'  => Subject::all(),
@@ -122,9 +126,9 @@ class QuestionsController extends Controller
             'message' => 'Question Deleted'
         ]);
     }
-
-    public function questions()
-    {
+    protected $adminId;
+    public function questions($adminId){
+        $this->adminId = $adminId;
         $question = Question::all();
 
         return DataTables::of($question)
@@ -145,8 +149,14 @@ class QuestionsController extends Controller
                 return '<img class="rounded-square" width="50" height="50" src="'. url($question->image) .'" alt="">';;
             })
             ->addColumn('action', function($question){
-                return '<a onclick="editForm('. $question->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
-                    '<a onclick="deleteData('. $question->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                $return = '';
+                if(HelperController::hasEdit($this->adminId,'question') == true){
+                    $return.='<a onclick="editForm('. $question->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' ;
+                }
+                if(HelperController::hasDelete($this->adminId,'question') == true){
+                    $return.='<a onclick="deleteData('. $question->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                }
+                return $return;
             })
             ->rawColumns(['question','idn','capacity_id','image', 'action'])->make(true);
     }

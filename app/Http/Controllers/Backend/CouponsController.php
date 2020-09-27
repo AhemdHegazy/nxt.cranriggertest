@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Coupon;
+use App\Http\Controllers\HelperController;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -11,6 +12,9 @@ class CouponsController extends Controller
 {
     public function index()
     {
+        if(HelperController::hasShow(auth('admin')->id(),'coupon') == false){
+            return redirect()->route('home.index');
+        }
         return view('admin.coupons.index');
     }
     public function world()
@@ -56,9 +60,9 @@ class CouponsController extends Controller
             'message' => 'Coupon Deleted'
         ]);
     }
-
-    public function coupons()
-    {
+    protected $adminId;
+    public function coupons($adminId){
+        $this->adminId = $adminId;
         $Coupon = Coupon::all();
 
         return DataTables::of($Coupon)
@@ -73,8 +77,14 @@ class CouponsController extends Controller
                 return $Coupon->package->name;
             })
             ->addColumn('action', function($Coupon){
-                return '<a onclick="editForm('. $Coupon->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
-                    '<a onclick="deleteData('. $Coupon->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                $return = '';
+                if(HelperController::hasEdit($this->adminId,'coupon') == true){
+                    $return.='<a onclick="editForm('. $Coupon->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' ;
+                }
+                if(HelperController::hasDelete($this->adminId,'coupon') == true){
+                    $return.='<a onclick="deleteData('. $Coupon->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                }
+                return $return;
             })
             ->rawColumns(['idn','name','package_id', 'action'])->make(true);
     }

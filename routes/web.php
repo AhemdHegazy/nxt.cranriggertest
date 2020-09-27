@@ -26,6 +26,8 @@ Route::group(['prefix' => 'admin','middleware' =>'admin:admin','namespace' => 'B
     */
     Route::get('/', 'HomeController@index')->name('home.index');
     Route::resource('packages', 'PackagesController', ['except' => ['create']]);
+    Route::resource('increases', 'IncreasesController', ['except' => ['create','show','index']]);
+    Route::get('increases-package/{packageId}', 'IncreasesController@package')->name('package.increase');
     Route::resource('questions', 'QuestionsController', ['except' => ['create']]);
     Route::resource('posts', 'PostsController', ['except' => ['create']]);
     Route::resource('subjects', 'SubjectsController', ['except' => ['create','show']]);
@@ -58,8 +60,13 @@ Route::group(['prefix' => 'admin','middleware' =>'admin:admin','namespace' => 'B
     |--------------------------------------- v-----------------------------------
     */
     Route::get('/copy','ControlsController@copy')->name('copy.index');
+    Route::get('/cms','CMSController@index')->name('cms.index');
+
+    Route::post('/cms','CMSController@update')->name('cms.update');
+    Route::get('/chats','ChatsController@index')->name('chats.index');
+    Route::post('/chats','CMSController@store')->name('chats.store');
     Route::get('/settings','ControlsController@settings')->name('settings.index');
-    Route::get('/permissions','AdminsController@getPermissions')->name('admin.permissions');
+    Route::get('/permissions/{userId}','AdminsController@getPermissions')->name('admin.permissions');
     Route::post('/permissions','AdminsController@SavePermissions')->name('save.permissions');
     Route::get('/profile','ControlsController@profile')->name('profile.index');
     Route::post('/profile/update','ControlsController@update')->name('profile.update');

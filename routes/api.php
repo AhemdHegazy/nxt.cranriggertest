@@ -19,23 +19,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Backend'],function(){
-   Route::get('subjects','SubjectsController@subjects')->name('api.subjects');
-   Route::get('capacities','CapacitiesController@capacities')->name('api.capacities');
-   Route::get('testimonials','TestimonialsController@testimonials')->name('api.testimonials');
-   Route::get('posts','PostsController@posts')->name('api.posts');
-   Route::get('questions','QuestionsController@questions')->name('api.questions');
-   Route::get('packages','PackagesController@packages')->name('api.packages');
-   Route::get('countries','CountriesController@countries')->name('api.countries');
-   Route::get('companies','CompaniesController@companies')->name('api.companies');
-   Route::get('companies-users/{companyId}','CompaniesController@CompanyUsers')->name('api.company_users');
-   Route::get('companies-orders/{companyId}','CompaniesController@ApiOrders')->name('api.company_orders');
-   Route::get('users-orders/{userId}','UsersController@ApiOrders')->name('api.users_orders');
-   Route::get('users-answers/{paymentId}','UsersController@ApiAnswers')->name('api.users_answers');
-   Route::get('orders','OrdersController@orders')->name('api.orders');
-   Route::get('users','UsersController@users')->name('api.users');
-   Route::get('admins','AdminsController@admins')->name('api.admins');
-   Route::get('coupons', 'CouponsController@coupons')->name('api.coupons');
-   Route::get('guidelines', 'GuidelinesController@guidelines')->name('api.guidelines');
-   Route::get('contacts', 'ContactsController@contacts')->name('api.contacts');
+   Route::get('subjects/{loggedId}','SubjectsController@subjects')->name('api.subjects');
+   Route::get('capacities/{loggedId}','CapacitiesController@capacities')->name('api.capacities');
+   Route::get('testimonials/{loggedId}','TestimonialsController@testimonials')->name('api.testimonials');
+   Route::get('posts/{loggedId}','PostsController@posts')->name('api.posts');
+   Route::get('questions/{loggedId}','QuestionsController@questions')->name('api.questions');
+   Route::get('packages/{loggedId}','PackagesController@packages')->name('api.packages');
+   Route::get('countries/{loggedId}','CountriesController@countries')->name('api.countries');
+   Route::get('companies/{loggedId}','CompaniesController@companies')->name('api.companies');
+   Route::get('companies-users/{companyId}/{loggedId}','CompaniesController@CompanyUsers')->name('api.company_users');
+   Route::get('companies-orders/{companyId}/{loggedId}','CompaniesController@ApiOrders')->name('api.company_orders');
+   Route::get('users-orders/{userId}/{loggedId}','UsersController@ApiOrders')->name('api.users_orders');
+   Route::get('users-answers/{paymentId}/{loggedId}','UsersController@ApiAnswers')->name('api.users_answers');
+   Route::get('orders/{loggedId}','OrdersController@orders')->name('api.orders');
+   Route::get('users/{loggedId}','UsersController@users')->name('api.users');
+   Route::get('admins/{LoggedId}','AdminsController@admins')->name('api.admins');
+   Route::get('coupons/{loggedId}', 'CouponsController@coupons')->name('api.coupons');
+   Route::get('guidelines/{loggedId}', 'GuidelinesController@guidelines')->name('api.guidelines');
+   Route::get('contacts/{loggedId}', 'ContactsController@contacts')->name('api.contacts');
+   Route::get('increases/{packageId}/{loggedId}', 'IncreasesController@increases')->name('api.increases');
 
 });

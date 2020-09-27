@@ -82,7 +82,9 @@ class CompaniesController extends Controller
             'message' => 'Company Deleted'
         ]);
     }
-    public function ApiOrders($companyId){
+    protected $adminId;
+    public function ApiOrders($companyId,$adminId){
+        $this->adminId = $adminId;
         $company = Order::where('status',1)->where('user_id',User::where('is_company',1)->where('company_id',$companyId)->first()->id)->get();
         return DataTables::of($company)
             ->addColumn('idn', function(){
@@ -109,7 +111,8 @@ class CompaniesController extends Controller
             ->rawColumns(['idn','name','amount','users','package'])->make(true);
     }
 
-    public function companies(){
+    public function companies($adminId){
+        $this->adminId = $adminId;
         $company = Company::all();
 
         return DataTables::of($company)
@@ -133,7 +136,8 @@ class CompaniesController extends Controller
             ->rawColumns(['idn','name','email','orders','details'])->make(true);
     }
 
-    public function CompanyUsers($company){
+    public function CompanyUsers($company,$adminId){
+        $this->adminId = $adminId;
         $user = User::where('company_id',$company)->where('has_company','<>',0)->get();
         return DataTables::of($user)
             ->addColumn('idn', function(){

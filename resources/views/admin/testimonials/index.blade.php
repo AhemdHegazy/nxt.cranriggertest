@@ -35,7 +35,7 @@
 
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.testimonials') }}",
+        ajax: "{{ route('api.testimonials',auth('admin')->id()) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},

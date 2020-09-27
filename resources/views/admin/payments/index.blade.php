@@ -4,6 +4,7 @@
         <div class="col-md-11">
             <div class="card">
                 <div class="card__header">
+                    @if(App\Payment::count() > 0)
                     <form action="{{route('payments.query')}}" method="POST">
                         @csrf
                         {{method_field('POST')}}
@@ -20,7 +21,7 @@
                             <label>Month</label>
                             <select name="month" id="month" class="form-control">
                                 <option value="1">January</option>
-                                <option value="2">Febuary</option>
+                                <option value="2">February</option>
                                 <option value="3">March</option>
                                 <option value="4">April</option>
                                 <option value="5">May</option>
@@ -47,6 +48,11 @@
                             <input type="submit" style="margin-top: 25px" value="Search" class="btn btn-danger">
                         </div>
                     </form>
+                    @else
+                        <div class="alert alert-info">
+                            There are no payment yet
+                        </div>
+                    @endif
                 </div>
                 <div class="card__body">
 

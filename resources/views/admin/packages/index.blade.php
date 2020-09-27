@@ -5,7 +5,9 @@
                 <div class="card">
                     <div class="card__header">
                         <h4>Packages List
+                            @if(\App\Http\Controllers\HelperController::hasAdd(auth('admin')->id(),'package') == true)
                             <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Package</a>
+                            @endif
                         </h4>
                     </div>
                     <div class="card__body">
@@ -19,9 +21,7 @@
                             <th>Questions</th>
                             <th>Price</th>
                             <th>Minutes</th>
-                            <th>Increase Minute</th>
-                            <th>Increase Price</th>
-                            <th width="60"></th>
+                            <th width="125"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -39,7 +39,7 @@
     var table = $('#packages-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.packages') }}",
+        ajax: "{{ route('api.packages',auth('admin')->id()) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},
@@ -49,8 +49,6 @@
             {data: 'questions', name: 'questions'},
             {data: 'price', name: 'price'},
             {data: 'minute', name: 'minute'},
-            {data: 'add_minute', name: 'add_minute'},
-            {data: 'add_price', name: 'add_price'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
     });

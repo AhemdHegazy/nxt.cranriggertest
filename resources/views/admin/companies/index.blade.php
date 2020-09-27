@@ -102,7 +102,7 @@
 <script type="text/javascript">
     var table = $('#Subject-table').DataTable({
         serverSide: true,
-        ajax: "{{ route('api.companies') }}",
+        ajax: "{{ route('api.companies',auth('admin')->id()) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},

@@ -72,7 +72,9 @@ class OrdersController extends Controller
             'message' => 'Order Deleted'
         ]);
     }
-    public function orders(){
+    protected $adminId;
+    public function orders($adminId){
+        $this->adminId = $adminId;
         $Order = Order::get();
 
         return DataTables::of($Order)

@@ -4,21 +4,29 @@
         <div class="col-md-11">
             <div class="card">
                 <div class="card__header">
-                    <h4>Orders List
-                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Order</a>
+
+                      <div class="card">
+                          <div class="card-body">
+                              Number Of Questions / {{\App\Package::find($packageId)->questions}} <br>
+                              Price / {{\App\Package::find($packageId)->price}} <br>
+                              Time / {{\App\Package::find($packageId)->minute}} <br>
+                          </div>
+                      </div>
+
+
+                    <h4>Increases List
+                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Increase</a>
                     </h4>
                 </div>
                 <div class="card__body">
-                    <table id="Order-table" class="table table-striped">
+                    <table id="Subject-table" class="table table-striped">
 
                         <thead>
                         <tr>
                             <th width="30">No</th>
-                            <th>User Name</th>
-                            <th>Package Name</th>
-                            <th>Hours</th>
-                            <th>Amount </th>
-                            <th> </th>
+                            <th>Time in Minute</th>
+                            <th>Price in SAR</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -30,24 +38,21 @@
             </div>
         </div>
     </div>
-    @include('admin.orders.form')
+    @include('admin.increases.form')
 @endsection
 @section('scripts')
 <script type="text/javascript">
-    var table = $('#Order-table').DataTable({
+    var table = $('#Subject-table').DataTable({
 
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.orders',auth('admin')->id()) }}",
+        ajax: "{{ route('api.increases',[$packageId,auth('admin')->id()]) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},
-            {data: 'user_id', name: 'user_id'},
-            {data: 'package_id', name: 'package_id'},
-            {data: 'hours', name: 'hours'},
-            {data: 'amount', name: 'amount'},
+            {data: 'minute', name: 'minute'},
+            {data: 'price', name: 'price'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
-
         ],
 
 
@@ -59,7 +64,7 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add Order');
+        $('.modal-title').text('Add Subject');
     }
 
     function editForm(id) {
@@ -67,17 +72,16 @@
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-            url: "{{ url('admin/orders') }}" + '/' + id + "/edit",
+            url: "{{ url('admin/increases') }}" + '/' + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 $('#modal-form').modal('show');
-                $('.modal-title').text('Edit Order');
+                $('.modal-title').text('Edit Subject');
 
                 $('#id').val(data.id);
-                $('#package_id').val(data.package_id);
-                $('#user_id').val(data.user_id);
-                $('#hours').val(data.hours);
+                $('#price').val(data.price);
+                $('#minute').val(data.minute);
             },
             error : function() {
                 alert("Nothing Data");
@@ -97,7 +101,7 @@
             confirmButtonText: 'Yes, delete it!'
         }).then(function () {
             $.ajax({
-                url : "{{ url('admin/orders') }}" + '/' + id,
+                url : "{{ url('admin/increases') }}" + '/' + id,
                 type : "POST",
                 data : {'_method' : 'DELETE', '_token' : csrf_token},
                 success : function(data) {
@@ -125,8 +129,8 @@
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
                 var id = $('#id').val();
-                if (save_method == 'add') url = "{{ url('admin/orders') }}";
-                else url = "{{ url('admin/orders') . '/' }}" + id;
+                if (save_method == 'add') url = "{{ url('admin/increases') }}";
+                else url = "{{ url('admin/increases') . '/' }}" + id;
 
                 $.ajax({
                     url : url,
@@ -158,8 +162,6 @@
             }
         });
     });
-    $('#package_id').change(function() {
-        $('#amount').val($('#package_id').val());
-    });
+
 </script>
 @endsection

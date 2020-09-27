@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Capacity;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HelperController;
 use App\Post;
 use App\Subject;
 use Illuminate\Http\Request;
@@ -15,6 +16,9 @@ class PostsController extends Controller
 
     public function index()
     {
+        if(HelperController::hasShow(auth('admin')->id(),'post') == false){
+            return redirect()->route('home.index');
+        }
         return view('admin.posts.index',[
             'subjects'  => Subject::all()
         ]);
@@ -100,8 +104,11 @@ class PostsController extends Controller
         ]);
     }
 
-    public function posts()
-    {
+    protected $adminId;
+
+    public function posts($adminIds){
+
+        $this->adminId = $adminIds;
         $post = Post::all();
 
         return DataTables::of($post)
@@ -109,24 +116,30 @@ class PostsController extends Controller
                 static $var= 1;
                 return $var++;
             })
-            ->addColumn('title',static function($post){
+            ->addColumn('title', function($post){
                 return $post->title;
             })
-            ->addColumn('description', static function($post){
+            ->addColumn('description',  function($post){
                 return $post->description;
             })
-            ->addColumn('subject', static function($post){
+            ->addColumn('subject',  function($post){
                 return $post->subject->name;
             })
-            ->addColumn('featured',static function($post){
+            ->addColumn('featured', function($post){
                 if ($post->featured == NULL){
                     return 'No Image';
                 }
                 return '<img class="rounded-square" width="50" height="50" src="'. url($post->featured) .'" alt="">';;
             })
-            ->addColumn('action',static function($post){
-                return '<a onclick="editForm('. $post->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
-                    '<a onclick="deleteData('. $post->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+            ->addColumn('action', function($post){
+                $return = '';
+                if(HelperController::hasEdit($this->adminId,'post') == true){
+                    $return.='<a onclick="editForm('. $post->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' ;
+                }
+                if(HelperController::hasDelete($this->adminId,'post') == true){
+                    $return.='<a onclick="deleteData('. $post->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                }
+                return $return;
             })
             ->rawColumns(['title','description','subject','featured','action'])->make(true);
     }

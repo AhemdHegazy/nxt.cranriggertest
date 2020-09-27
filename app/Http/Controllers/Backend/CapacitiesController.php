@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Capacity;
+use App\Http\Controllers\HelperController;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -11,6 +12,9 @@ class CapacitiesController extends Controller
 {
     public function index()
     {
+        if(HelperController::hasShow(auth('admin')->id(),'capacity') == false){
+            return redirect()->route('home.index');
+        }
         return view('admin.capacities.index');
     }
 
@@ -62,9 +66,9 @@ class CapacitiesController extends Controller
             'message' => 'Capacity Deleted'
         ]);
     }
-
-    public function capacities()
-    {
+    protected $adminId;
+    public function capacities($adminId){
+        $this->adminId = $adminId;
         $capacity = Capacity::all();
 
         return DataTables::of($capacity)
@@ -82,8 +86,14 @@ class CapacitiesController extends Controller
                 return $capacity->description;
             })
             ->addColumn('action', function($capacity){
-                return '<a onclick="editForm('. $capacity->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
-                    '<a onclick="deleteData('. $capacity->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                $return = '';
+                if(HelperController::hasEdit($this->adminId,'capacity') == true){
+                    $return.='<a onclick="editForm('. $capacity->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' ;
+                }
+                if(HelperController::hasDelete($this->adminId,'capacity') == true){
+                    $return.='<a onclick="deleteData('. $capacity->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                }
+                return $return;
             })
             ->rawColumns(['idn','name','subject','description', 'action'])->make(true);
     }

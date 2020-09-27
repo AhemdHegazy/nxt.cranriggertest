@@ -5,7 +5,10 @@
             <div class="card">
                 <div class="card__header">
                     <h4>Admins list
-                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Admin</a>
+                        @if(\App\Http\Controllers\HelperController::hasAdd(auth('admin')->id(),'admin') == true)
+                            <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Admin</a>
+                        @endif
+
                     </h4>
                 </div>
                 <div class="card__body">
@@ -37,7 +40,7 @@
         var table = $('#admins-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('api.admins') }}",
+            ajax: "{{ route('api.admins',auth('admin')->id()) }}",
 
             columns: [
                 {data: 'id', name: 'id'},

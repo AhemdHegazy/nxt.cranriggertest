@@ -36,7 +36,7 @@
         var table = $('#users-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('api.company_orders',$companyId) }}",
+            ajax: "{{ route('api.company_orders',[$companyId,auth('admin')->id()]) }}",
 
             columns: [
                 {data: 'idn', name: 'idn'},

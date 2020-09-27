@@ -7,7 +7,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="icon" href="{{ asset('backend/favicon.ico') }}">
 
-<title>Material Admin</title>
+<title>Crane & Rigger System</title>
 <!-- Bootstrap core CSS -->
 <link href="{{ asset('backend/css/bootstrap.min.css') }}" rel="stylesheet">
 

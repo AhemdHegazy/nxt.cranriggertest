@@ -57,23 +57,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="minute" class="col-md-2 control-label" style="color: #ddd;;text-align: left">Number Of minuites</label>
+                        <label for="minute" class="col-md-2 control-label" style="color: #ddd;;text-align: left">Number Of minutes</label>
                         <div class="col-md-10">
                             <input type="number" id="minute" name="minute" class="form-control" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="add_minute" class="col-md-2 control-label" style="color: #ddd;;text-align: left">Increase Minute</label>
-                        <div class="col-md-10">
-                            <input type="number" id="add_minute" name="add_minute" class="form-control" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="add_price" class="col-md-2 control-label" style="color: #ddd;;text-align: left">Increase Price</label>
-                        <div class="col-md-10">
-                            <input type="number" id="add_price" name="add_price" class="form-control" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

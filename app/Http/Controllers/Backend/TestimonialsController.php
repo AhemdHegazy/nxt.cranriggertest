@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\HelperController;
 use App\Testimonial;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,6 +12,9 @@ class TestimonialsController extends Controller
 {
     public function index()
     {
+        if(HelperController::hasShow(auth('admin')->id(),'testimonial') == false){
+            return redirect()->route('home.index');
+        }
         return view('admin.testimonials.index');
     }
 
@@ -25,9 +29,9 @@ class TestimonialsController extends Controller
             'message' => 'Testimonial Deleted'
         ]);
     }
-
-    public function testimonials()
-    {
+    protected $adminId;
+    public function testimonials($adminId){
+        $this->adminId = $adminId;
         $testimonial = Testimonial::all();
 
         return DataTables::of($testimonial)
@@ -45,7 +49,11 @@ class TestimonialsController extends Controller
                 return $testimonial->stars == 0 ? 'Negative' : 'Positive';
             })
             ->addColumn('action', function($testimonial){
-                return '<a onclick="deleteData('. $testimonial->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                $return = '';
+                if(HelperController::hasDelete($this->adminId,'testimonial') == true){
+                    $return.='<a onclick="deleteData('. $testimonial->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                }
+                return $return;
             })
             ->rawColumns(['idn','user','stars', 'action'])->make(true);
     }

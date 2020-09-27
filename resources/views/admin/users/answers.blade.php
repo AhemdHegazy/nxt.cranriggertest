@@ -33,7 +33,7 @@
 @section('scripts')
     <script type="text/javascript">
         var table = $('#users-table').DataTable({
-            ajax: "{{ route('api.users_answers',$paymentId) }}",
+            ajax: "{{ route('api.users_answers',[$paymentId,auth('admin')->id()]) }}",
 
             columns: [
                 {data: 'idn', name: 'idn'},

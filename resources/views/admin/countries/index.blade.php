@@ -5,8 +5,10 @@
             <div class="card">
                 <div class="card__header">
                     <h4>Countries List
+                        @if(\App\Http\Controllers\HelperController::hasAdd(auth('admin')->id(),'country') == true)
                         <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Country</a>
                         <a href="{{route('world.index')}}" class="btn btn-info pull-right" style="margin-top: -8px;margin-right: 15px">See List Or Countries</a>
+                        @endif
                     </h4>
                 </div>
                 <div class="card__body">
@@ -37,7 +39,7 @@
 
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.countries') }}",
+        ajax: "{{ route('api.countries',auth('admin')->id()) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},

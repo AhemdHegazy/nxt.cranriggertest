@@ -6,7 +6,9 @@
             <div class="card">
                 <div class="card__header">
                     <h4>Posts List
+                        @if(\App\Http\Controllers\HelperController::hasAdd(auth('admin')->id(),'post') == true)
                         <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Post</a>
+                        @endif
                     </h4>
                 </div>
                 <div class="card__body">
@@ -49,7 +51,7 @@
         var table = $('#posts-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('api.posts') }}",
+            ajax: "{{ route('api.posts',auth('admin')->id()) }}",
 
             columns: [
                 {data: 'idn', name: 'idn'},

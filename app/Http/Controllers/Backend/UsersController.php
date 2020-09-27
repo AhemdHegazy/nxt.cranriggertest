@@ -50,7 +50,10 @@ class UsersController extends Controller
     public function orders($userId){
         return view('admin.users.orders',compact('userId'));
     }
-    public function ApiAnswers($companyId){
+
+    protected $adminId;
+    public function ApiAnswers($companyId,$adminId){
+        $this->adminId = $adminId;
         $company = Answer::where('payment_id',$companyId)->get();
         return DataTables::of($company)
             ->addColumn('idn', function(){

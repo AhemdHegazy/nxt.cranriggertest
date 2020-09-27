@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HelperController;
 use App\Package;
 use App\Subject;
 use Illuminate\Http\Request;
@@ -12,6 +13,9 @@ class PackagesController extends Controller
 {
     public function index()
     {
+        if(HelperController::hasShow(auth('admin')->id(),'package') == false){
+            return redirect()->route('home.index');
+        }
         $subjects = Subject::all();
         return view('admin.packages.index',compact('subjects'));
     }
@@ -55,9 +59,9 @@ class PackagesController extends Controller
             'message' => 'Package Deleted'
         ]);
     }
-
-    public function packages()
-    {
+    protected $adminId;
+    public function packages($adminId){
+        $this->adminId = $adminId;
         $Package = Package::all();
 
         return DataTables::of($Package)
@@ -91,8 +95,17 @@ class PackagesController extends Controller
                 return $Package->increase.' SR / 1Hour';
             })
             ->addColumn('action', function($Package){
-                return '<a onclick="editForm('. $Package->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' .
-                    '<a onclick="deleteData('. $Package->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                $return = '';
+                if(HelperController::hasEdit($this->adminId,'package') == true){
+                    $return.='<a onclick="editForm('. $Package->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a> ' ;
+                }
+                if(HelperController::hasDelete($this->adminId,'package') == true){
+                    $return.='<a onclick="deleteData('. $Package->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i></a>';
+                }
+                if(HelperController::hasAdd($this->adminId,'package') == true){
+                    $return.= '<a href="'.route('package.increase',$Package->id).'" class="btn btn-success btn-xs" style="margin: 0 2px">Increases</a>';;
+                }
+                return $return;
             })
             ->rawColumns(['idn','type','questions','subject','price','hours','increase', 'action'])->make(true);
     }

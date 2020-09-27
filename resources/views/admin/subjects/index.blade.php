@@ -5,7 +5,9 @@
             <div class="card">
                 <div class="card__header">
                     <h4>Subject List
+                        @if(\App\Http\Controllers\HelperController::hasAdd(auth('admin')->id(),'subject') == true)
                         <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Subject</a>
+                        @endif
                     </h4>
                 </div>
                 <div class="card__body">
@@ -36,7 +38,7 @@
 
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.subjects') }}",
+        ajax: "{{ route('api.subjects',auth('admin')->id()) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},

@@ -5,7 +5,9 @@
             <div class="card">
                 <div class="card__header">
                     <h4>Coupons List
+                        @if(\App\Http\Controllers\HelperController::hasAdd(auth('admin')->id(),'coupon') == true)
                         <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Add Coupon</a>
+                        @endif
                     </h4>
                 </div>
                 <div class="card__body">
@@ -36,7 +38,7 @@
 
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.coupons') }}",
+        ajax: "{{ route('api.coupons',auth('admin')->id()) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},

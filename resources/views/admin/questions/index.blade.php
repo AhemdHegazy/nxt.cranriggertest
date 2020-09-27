@@ -79,7 +79,7 @@
     var table = $('#questions-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('api.questions') }}",
+        ajax: "{{ route('api.questions',auth('admin')->id()) }}",
 
         columns: [
             {data: 'idn', name: 'idn'},

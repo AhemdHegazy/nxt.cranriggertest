@@ -18,14 +18,19 @@ class Package extends Model
     ];
 
     public function orders(){
-        return $this->belongsTo('App\Order');
+        return $this->hasMany('App\Order');
     }
 
     public function coupons(){
-        return $this->belongsTo('App\Coupon');
+        return $this->hasMany('App\Coupon');
     }
 
     public function subject(){
         return $this->belongsTo('App\Subject');
+    }
+
+    public function increases()
+    {
+        return $this->hasMany('App\Increase');
     }
 }
